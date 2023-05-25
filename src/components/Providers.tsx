@@ -1,0 +1,23 @@
+'use client'
+
+import { FC, ReactNode } from 'react'
+import { Toaster } from 'react-hot-toast'
+
+interface ProvidersProps {
+  children: ReactNode
+}
+
+const Providers: FC<ProvidersProps> = ({ children }) => {
+  return (
+    <>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{ duration: 3000 }}
+      />
+      {children}
+    </>
+  )
+}
+
+export default Providers
