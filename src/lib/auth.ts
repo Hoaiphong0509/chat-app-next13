@@ -1,6 +1,6 @@
-import { NextAuthOptions, User } from 'next-auth'
+import { NextAuthOptions } from 'next-auth'
 import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter'
-import { db } from '@/lib/db'
+import { db } from './db'
 import GoogleProvider from 'next-auth/providers/google'
 import { fetchRedis } from '@/app/helpers/redis'
 
@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt'
   },
+
   pages: {
     signIn: '/login'
   },
@@ -40,7 +41,10 @@ export const authOptions: NextAuthOptions = {
         | null
 
       if (!dbUserResult) {
-        token.id = user!.id
+        if (user) {
+          token.id = user!.id
+        }
+
         return token
       }
 
@@ -60,6 +64,7 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email
         session.user.image = token.picture
       }
+
       return session
     },
     redirect() {
